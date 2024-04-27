@@ -1,0 +1,10 @@
+class PhoneBook():
+    def __init__ (self, Lastname, Name, PhoneNumber, Email):
+        self.Lastname=Lastname
+        self.Name=Name
+        self.PhoneNumber=PhoneNumber
+        self.Email=Email
+with open("Book.txt","r") as f:
+    for line in range(2):
+        r=f.readline()
+        print(r.split())
