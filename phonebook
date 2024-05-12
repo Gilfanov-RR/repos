@@ -1,10 +1,34 @@
-class PhoneBook():
-    def __init__ (self, Lastname, Name, PhoneNumber, Email):
-        self.Lastname=Lastname
-        self.Name=Name
-        self.PhoneNumber=PhoneNumber
-        self.Email=Email
-with open("Book.txt","r") as f:
-    for line in range(2):
-        r=f.readline()
-        print(r.split())
+phone_book={}
+# Функция для добавления контакта в телефонную книгу
+def add_cont(name,lastname,phone_number):
+    print("Контакт добавлен")
+    phone_book[name+" "+lastname]=phone_number
+def find_cont(name,lastname):
+    name=input("Введите имя: ")
+    lastname=input("Введите фамилию: ")
+    fname=name+" "+lastname
+    if fname in phone_book:
+        print (fname+" "+phone_book[fname])
+    else:
+        print ("Контакт не найден")
+def main():
+    while True:
+        print("Меню:")
+        print("1.Добавить контакт")
+        print("2.Поиск контакта по имени")
+        print("3.Закрыть телефонную книгу")
+        func=input("Выберите действие: ")
+        if func=="1":
+            add_name=input("Введите имя: ")
+            add_lastname=input("Введите фамилию: ")
+            add_number_phone=input("Введите номер телефона: ")
+            add_cont(add_name,add_lastname,add_number_phone)
+        elif func=="2":
+            find_cont()
+        elif func=="3":
+            print("Программа завершена")
+            break
+        else:
+            print("Неизвестное действие. Выберите другое")
+if __name__=="__main__":
+    main()
