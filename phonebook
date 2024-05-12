@@ -1,16 +1,18 @@
+import os
+clear=lambda: os.system('cls')
 phone_book={}
 # Функция для добавления контакта в телефонную книгу
-def add_cont(name,lastname,phone_number):
+def add_contact(name,lastname,phone_number):
     print("Контакт добавлен")
     phone_book[name+" "+lastname]=phone_number
-def find_cont(name,lastname):
-    name=input("Введите имя: ")
-    lastname=input("Введите фамилию: ")
-    fname=name+" "+lastname
-    if fname in phone_book:
-        print (fname+" "+phone_book[fname])
+def find_contact(name,lastname):
+    if (name and lastname) in phone_book:
+        print (name+lastname+" "+phone_book[fname])
     else:
         print ("Контакт не найден")
+def delete_contact(name,lastname):
+    if (name and lastname) in phone_book:
+        del phone_book[name,lastname]
 def main():
     while True:
         print("Меню:")
@@ -22,9 +24,15 @@ def main():
             add_name=input("Введите имя: ")
             add_lastname=input("Введите фамилию: ")
             add_number_phone=input("Введите номер телефона: ")
-            add_cont(add_name,add_lastname,add_number_phone)
+            add_contact(add_name,add_lastname,add_number_phone)
         elif func=="2":
-            find_cont()
+            find_name = input("Введите имя: ")
+            find_lastname = input("Введите фамилию: ")
+            find_contact(find_name, find_lastname)
+        elif func=="3":
+            delete_name = input("Введите имя: ")
+            delete_lastname = input("Введите фамилию: ")
+            delete_contact(delete_name,delete_lastname)
         elif func=="3":
             print("Программа завершена")
             break
