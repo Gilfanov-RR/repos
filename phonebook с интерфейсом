@@ -1,5 +1,8 @@
 from tkinter import *
-phone_book={}
+import os
+if os.path.exists("phone_book.txt")==0:
+    create_file=open("phone_book.txt","w")
+    create_file.close()
 def add_contact_page():
     add_frame.pack(fill=BOTH, expand=1)
     frame.pack_forget()
@@ -7,25 +10,63 @@ def add_contact():
     name_cont=add_name.get()
     lastname_cont=add_lastname.get()
     phone_number_cont=add_phone_number.get()
-    a = ""
     if len(phone_number_cont)==12:
+        a=""
         for i in range (11):
             a+=phone_number_cont[i+1]
         if a.isdigit():
-            cont_create=Label(add_frame,text="Контакт успешно добавлен",bg="white",font=30)
-            cont_create.pack()
+            file = open("phone_book.txt", "r")
+            while True:
+                a=file.readline()
+                if not a:
+                    break
+                word=a.split()
+                if name_cont==word[0] and lastname_cont==word[1] and phone_number_cont==word[2]:
+                    cont_nocreate = Label(add_frame, text="Данный контакт существует", bg="white", font=30)
+                    cont_nocreate.pack()
+                    cont_nocreate.after(5000, cont_nocreate.destroy)
+                    break
+                elif name_cont==word[0] and lastname_cont==word[1]:
+                    cont_create = Label(add_frame, text="Дополнительный номер телефона добавлен", bg="white", font=30)
+                    cont_create.pack()
+                    cont_create.after(5000,cont_create.destroy)
+                    break
+                else:
+                    cont_create = Label(add_frame, text="Контакт успешно добавлен", bg="white", font=30)
+                    cont_create.pack()
+                    cont_create.after(5000, cont_create.destroy)
+                    break
+        else:
+            cont_nocreate = Label(add_frame, text="Неверный номер телефона", bg="white", font=30)
+            cont_nocreate.pack()
+            cont_nocreate.after(5000, cont_create.destroy)
     else:
         cont_nocreate = Label(add_frame, text="Неверный номер телефона", bg="white", font=30)
         cont_nocreate.pack()
+        cont_nocreate.after(5000, cont_nocreate.destroy)
 def find_contact_page():
     find_frame.pack(fill=BOTH, expand=1)
     frame.pack_forget()
+def find_contact():
+    name_cont=find_name.get()
+    lastname_cont=find_lastname.get()
+    file=open("phone_book.txt","r")
+    while True:
+        a=file.readline()
+        if not a:
+            break
+        word=a.split()
+        if word[0]==name_cont and word[1]==lastname_cont:
+            cont_find=Label(find_frame,text=word[2],bg="white",font=30)
+            cont_find.pack()
+    file.close()
 def delete_contact_page():
     delete_frame.pack(fill=BOTH, expand=1)
     frame.pack_forget()
-def main_page():
+def menu_page():
     frame.pack(fill=BOTH, expand=1)
     add_frame.pack_forget()
+    find_frame.pack_forget()
 root=Tk()
 root.title("Телефонный справочник")
 root.geometry("500x300")
@@ -37,15 +78,15 @@ add_frame=Frame(root,bg="white")
 delete_frame=Frame(root,bg="white")
 find_frame=Frame(root,bg="white")
 #Создание стартовой страницы
-title = Label(frame, text="Меню", bg="white", font=40)
-title.pack()
-btn_add = Button(frame, text="Добавить контакт", bg="yellow", command=add_contact_page)
-btn_add.pack()
-btn_find=Button(frame, text="Поиск контакта",bg="yellow",command=find_contact_page)
-btn_find.pack()
-btn_delete=Button(frame, text="Удалить контакт",bg="white",command=delete_contact_page)
-btn_delete.pack()
-#Создание страницы поиска
+menu_title = Label(frame, text="Меню", bg="white", font=40)
+menu_title.pack()
+menu_btn_add = Button(frame, text="Добавить контакт", bg="yellow", command=add_contact_page)
+menu_btn_add.pack()
+menu_btn_find=Button(frame, text="Поиск контакта",bg="yellow",command=find_contact_page)
+menu_btn_find.pack()
+menu_btn_delete=Button(frame, text="Удалить контакт",bg="white",command=delete_contact_page)
+menu_btn_delete.pack()
+#Создание страницы создания контакта
 add_title=Label(add_frame,text="Создание контакта",bg="white",font=30)
 add_title.pack()
 name=Label(add_frame,text="Введите имя",bg="white",font=30)
@@ -63,7 +104,22 @@ add_phone_number.pack()
 add_phone_number.insert(0,"+7")
 btn_create=Button(add_frame,text="Создать контакт",bg="white",command=add_contact)
 btn_create.pack()
-btn_menu=Button(add_frame,text="Меню",bg="white",command=main_page)
+btn_menu=Button(add_frame,text="Меню",bg="white",command=menu_page)
 btn_menu.pack()
-main_page()
+#Создание страницы поиска контакта
+find_title=Label(find_frame,text="Поиск контакта",bg="white",font=30)
+find_title.pack()
+name=Label(find_frame,text="Введите имя",bg="white",font=30)
+name.pack()
+find_name=Entry(find_frame,bg="white",font=30)
+find_name.pack()
+lastname=Label(find_frame,text="Введите фамилию",bg="white",font=30)
+lastname.pack()
+find_lastname=Entry(find_frame,bg="white",font=30)
+find_lastname.pack()
+find_btn=Button(find_frame,text="Поиск",bg="white",command=find_contact)
+find_btn.pack()
+find_btn_menu=Button(find_frame,text="Меню",bg="white",command=menu_page,font=30)
+find_btn_menu.pack()
+menu_page()
 root.mainloop()
