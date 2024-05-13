@@ -1,0 +1,69 @@
+from tkinter import *
+phone_book={}
+def add_contact_page():
+    add_frame.pack(fill=BOTH, expand=1)
+    frame.pack_forget()
+def add_contact():
+    name_cont=add_name.get()
+    lastname_cont=add_lastname.get()
+    phone_number_cont=add_phone_number.get()
+    a = ""
+    if len(phone_number_cont)==12:
+        for i in range (11):
+            a+=phone_number_cont[i+1]
+        if a.isdigit():
+            cont_create=Label(add_frame,text="Контакт успешно добавлен",bg="white",font=30)
+            cont_create.pack()
+    else:
+        cont_nocreate = Label(add_frame, text="Неверный номер телефона", bg="white", font=30)
+        cont_nocreate.pack()
+def find_contact_page():
+    find_frame.pack(fill=BOTH, expand=1)
+    frame.pack_forget()
+def delete_contact_page():
+    delete_frame.pack(fill=BOTH, expand=1)
+    frame.pack_forget()
+def main_page():
+    frame.pack(fill=BOTH, expand=1)
+    add_frame.pack_forget()
+root=Tk()
+root.title("Телефонный справочник")
+root.geometry("500x300")
+root.resizable(width=False,height=False)
+canvas=Canvas(root,height=500,width=300)
+#Фреймы
+frame = Frame(root, bg="white")
+add_frame=Frame(root,bg="white")
+delete_frame=Frame(root,bg="white")
+find_frame=Frame(root,bg="white")
+#Создание стартовой страницы
+title = Label(frame, text="Меню", bg="white", font=40)
+title.pack()
+btn_add = Button(frame, text="Добавить контакт", bg="yellow", command=add_contact_page)
+btn_add.pack()
+btn_find=Button(frame, text="Поиск контакта",bg="yellow",command=find_contact_page)
+btn_find.pack()
+btn_delete=Button(frame, text="Удалить контакт",bg="white",command=delete_contact_page)
+btn_delete.pack()
+#Создание страницы поиска
+add_title=Label(add_frame,text="Создание контакта",bg="white",font=30)
+add_title.pack()
+name=Label(add_frame,text="Введите имя",bg="white",font=30)
+name.pack()
+add_name=Entry(add_frame,bg="white",font=30)
+add_name.pack()
+lastname=Label(add_frame,text="Введите фамилию",bg="white",font=30)
+lastname.pack()
+add_lastname=Entry(add_frame,bg="white",font=30)
+add_lastname.pack()
+phone_number=Label(add_frame,text="Введите номер телефона", bg="white",font=30)
+phone_number.pack()
+add_phone_number=Entry(add_frame,bg="white",font=30)
+add_phone_number.pack()
+add_phone_number.insert(0,"+7")
+btn_create=Button(add_frame,text="Создать контакт",bg="white",command=add_contact)
+btn_create.pack()
+btn_menu=Button(add_frame,text="Меню",bg="white",command=main_page)
+btn_menu.pack()
+main_page()
+root.mainloop()
