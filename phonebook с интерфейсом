@@ -82,24 +82,47 @@ def find_contact():
                 word=line.split()
                 if word[0]==name and word[1]==lastname:
                     phone_number.append(word[2])
-        return phone_number if phone_number else None
+        return phone_number if phone_number else "None"
     phone_numbers=search_contact(name_cont,lastname_cont)
     print(phone_numbers)
-    if phone_numbers !={None}:
+    if phone_numbers!="None":
         cont_find = Label(find_frame, text=phone_numbers, bg="white", font=30)
         cont_find.pack()
         cont_find.after(5000, cont_find.destroy)
-    elif phone_numbers==None:
+    else:
         cont_nofind = Label(find_frame, text="Контакт не найден", bg="white", font=30)
         cont_nofind.pack()
         cont_nofind.after(5000, cont_nofind.destroy)
 def delete_contact_page():
     delete_frame.pack(fill=BOTH, expand=1)
     frame.pack_forget()
+def delete_contact():
+    name_cont=delete_name.get()
+    lastname_cont=delete_lastname.get()
+    flag=0
+    phone_number=[]
+    with open("phone_book.txt", "r") as file:
+        for line in file:
+            word = line.split()
+            if word[0] == name and word[1] == lastname:
+                phone_number.append(word[2])
+                flag+=1
+    return phone_number if phone_number else "None"
+    if flag>1:
+        text=Label(delete_frame,text="У данного контакта несколько номеров телефона", bg="white", font=30)
+        text1=Label(delete_frame,text="Введите номер телефона,который хотите удалить", bg="white", font=30)
+        numb=Entry(bg="white", font=30)
+        del_numb=numb.get()
+
+
+#phone_numbers = search_contact(name_cont, lastname_cont)
+#print(phone_numbers)
+
 def menu_page():
     frame.pack(fill=BOTH, expand=1)
     add_frame.pack_forget()
     find_frame.pack_forget()
+    delete_frame.pack_forget()
 root=Tk()
 root.title("Телефонный справочник")
 root.geometry("500x300")
@@ -154,5 +177,20 @@ find_btn=Button(find_frame,text="Поиск",bg="white",command=find_contact)
 find_btn.pack()
 find_btn_menu=Button(find_frame,text="Меню",bg="white",command=menu_page,font=30)
 find_btn_menu.pack()
+#Создание страницы удаления контакта
+delete_title=Label(delete_frame,text="Удаление контака",bg="white",font=30)
+delete_title.pack()
+name=Label(delete_frame,text="Введите имя",bg="white",font=30)
+name.pack()
+delete_name=Entry(delete_frame,bg="white",font=30)
+delete_name.pack()
+lastname=Label(delete_frame,text="Введите фамилию",bg="white",font=30)
+lastname.pack()
+delete_lastname=Entry(delete_frame,bg="white",font=30)
+delete_lastname.pack()
+delete_btn=Button(delete_frame,text="Удалить",bg="white",font=30,command=delete_contact)
+delete_btn.pack()
+delete_btn_menu=Button(delete_frame,text="Меню",bg="white",font=30,command=menu_page)
+delete_btn_menu.pack()
 menu_page()
 root.mainloop()
