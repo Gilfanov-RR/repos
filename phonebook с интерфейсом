@@ -1,11 +1,19 @@
+import unittest
 from tkinter import *
 import os
 if os.path.exists("phone_book.txt")==0:
-    create_file=open("phone_book.txt","w")
+    create_file=open("phone_book.txt", "w")
     create_file.close()
+
 def add_contact_page():
-    add_frame.pack(fill=BOTH, expand=1)
+    add_frame.pack_forget()
+    add_frame.pack(fill="both", expand=True)
     frame.pack_forget()
+    add_name.delete(0,END)
+    add_lastname.delete(0,END)
+    add_phone_number.delete(0,END)
+    add_phone_number.insert(0, "+7")
+
 def add_contact():
     name_cont=add_name.get()
     lastname_cont=add_lastname.get()
@@ -23,21 +31,21 @@ def add_contact():
             a+=phone_number_cont[i+1]
         if a.isdigit():
             while True:
-                if opfile=="":
+                if opfile == "":
                     file = open("phone_book.txt", "a")
                     file.write(name_cont + " " + lastname_cont + " " + phone_number_cont + "\n")
                     file.close()
                     cont_create = Label(add_frame, text="Контакт успешно добавлен", bg="white", font=30)
                     cont_create.pack()
                     cont_create.after(5000, cont_create.destroy)
-                    break
-                word=opfile.split()
-                if name_cont==word[0] and lastname_cont==word[1] and phone_number_cont==word[2]:
+                    return 0
+                word = opfile.split()
+                if name_cont == word[0] and lastname_cont == word[1] and phone_number_cont == word[2]:
                     file.close()
                     cont_nocreate = Label(add_frame, text="Данный контакт существует", bg="white", font=30)
                     cont_nocreate.pack()
                     cont_nocreate.after(5000, cont_nocreate.destroy)
-                    break
+                    return 0
                 elif name_cont==word[0] and lastname_cont==word[1]:
                     file.close()
                     file = open("phone_book.txt", "a")
@@ -46,16 +54,16 @@ def add_contact():
                     cont_create = Label(add_frame, text="Дополнительный номер телефона добавлен", bg="white", font=30)
                     cont_create.pack()
                     cont_create.after(5000,cont_create.destroy)
-                    break
+                    return 0
                 else:
                     file.close()
-                    file=open("phone_book.txt","a")
+                    file=open("phone_book.txt", "a")
                     file.write(name_cont+" "+lastname_cont+" "+phone_number_cont+"\n")
                     file.close()
                     cont_create = Label(add_frame, text="Контакт успешно добавлен", bg="white", font=30)
                     cont_create.pack()
                     cont_create.after(5000, cont_create.destroy)
-                    break
+                    return 0
         else:
             file.close()
             cont_nocreate = Label(add_frame, text="Неверный номер телефона", bg="white", font=30)
@@ -68,23 +76,26 @@ def add_contact():
         cont_nocreate.pack()
         cont_nocreate.after(5000, cont_nocreate.destroy)
         return 0
+
 def find_contact_page():
-    find_frame.pack(fill=BOTH, expand=1)
+    find_frame.pack(fill="both", expand=True)
     frame.pack_forget()
+    find_name.delete(0,END)
+    find_lastname.delete(0,END)
+
 def find_contact():
     name_cont=find_name.get()
     lastname_cont=find_lastname.get()
     def search_contact(name, lastname):
         phone_number=[]
         flag=0
-        with open("phone_book.txt","r") as file:
+        with open("phone_book.txt", "r") as file:
             for line in file:
                 word=line.split()
                 if word[0]==name and word[1]==lastname:
                     phone_number.append(word[2])
         return phone_number if phone_number else "None"
     phone_numbers=search_contact(name_cont,lastname_cont)
-    print(phone_numbers)
     if phone_numbers!="None":
         cont_find = Label(find_frame, text=phone_numbers, bg="white", font=30)
         cont_find.pack()
@@ -93,55 +104,173 @@ def find_contact():
         cont_nofind = Label(find_frame, text="Контакт не найден", bg="white", font=30)
         cont_nofind.pack()
         cont_nofind.after(5000, cont_nofind.destroy)
+
+
 def delete_contact_page():
-    delete_frame.pack(fill=BOTH, expand=1)
+    delete_frame.pack(fill="both", expand=True)
     frame.pack_forget()
+    delete_name.delete(0,END)
+    delete_lastname.delete(0,END)
+
+
 def delete_contact():
-    name_cont=delete_name.get()
-    lastname_cont=delete_lastname.get()
-    flag=0
-    phone_number=[]
-    with open("phone_book.txt", "r") as file:
-        for line in file:
-            word = line.split()
-            if word[0] == name and word[1] == lastname:
-                phone_number.append(word[2])
-                flag+=1
-    return phone_number if phone_number else "None"
-    if flag>1:
-        text=Label(delete_frame,text="У данного контакта несколько номеров телефона", bg="white", font=30)
-        text1=Label(delete_frame,text="Введите номер телефона,который хотите удалить", bg="white", font=30)
-        numb=Entry(bg="white", font=30)
-        del_numb=numb.get()
+    name_cont = delete_name.get()
+    lastname_cont = delete_lastname.get()
+
+    def search_contact(name, lastname):
+        phone_number = []
+        with open("phone_book.txt", "r") as file:
+            for line in file:
+                word = line.split()
+                if word[0] == name and word[1] == lastname:
+                    phone_number.append(word[2])
+        return phone_number if phone_number else None
+
+    phone_numbers = search_contact(name_cont, lastname_cont)
+    if phone_numbers:
+        delete_phone_number.set(phone_numbers)
+        delete_frame2.pack(fill="both", expand=True)
+        delete_frame.pack_forget()
+    if name_cont == "" or lastname_cont == "":
+        cont_nocreate = Label(delete_frame, text="Заполнены не все поля", bg="white", font=30)
+        cont_nocreate.pack()
+        cont_nocreate.after(2500, cont_nocreate.destroy)
+        return
+    else:
+        cont_nofind = Label(delete_frame, text="Контакт не найден", bg="white", font=30)
+        cont_nofind.pack()
+        cont_nofind.after(2500, cont_nofind.destroy)
 
 
-#phone_numbers = search_contact(name_cont, lastname_cont)
-#print(phone_numbers)
+def delete_selected_number():
+    name_cont = delete_name.get()
+    lastname_cont = delete_lastname.get()
+    selected_number = delete_phone_number_list.get(ACTIVE)
+    for i in range(11):
+        a += phone_number_cont[i + 1]
+    if selected_number:
+        with open("phone_book.txt", "r") as file:
+            lines = file.readlines()
+
+        with open("phone_book.txt", "w") as file:
+            for line in lines:
+                if line.strip("\n") != f"{name_cont} {lastname_cont} {selected_number}":
+                    file.write(line)
+
+        cont_delete = Label(delete_frame2, text="Номер успешно удален", bg="white", font=30)
+        cont_delete.pack()
+        cont_delete.after(2500, cont_delete.destroy)
+        delete_frame.pack(fill="both", expand=True)
+        delete_frame2.pack_forget()
+    else:
+        cont_noselect = Label(delete_frame2, text="Не выбран номер для удаления", bg="white", font=30)
+        cont_noselect.pack()
+        cont_noselect.after(2500, cont_noselect.destroy)
+
+
+def edit_contact_page():
+    edit_frame.pack(fill="both", expand=True)
+    frame.pack_forget()
+    edit_name.delete(0, END)
+    edit_lastname.delete(0, END)
+
+def edit_contact():
+    name_cont = edit_name.get()
+    lastname_cont = edit_lastname.get()
+
+    def search_contact(name, lastname):
+        phone_number = []
+        with open("phone_book.txt", "r") as file:
+            for line in file:
+                word = line.split()
+                if word[0] == name and word[1] == lastname:
+                    phone_number.append(word[2])
+        return phone_number if phone_number else None
+
+    phone_numbers = search_contact(name_cont, lastname_cont)
+    if phone_numbers:
+        edit_phone_number.set(phone_numbers)
+        edit_frame2.pack(fill="both", expand=True)
+        edit_frame.pack_forget()
+    if name_cont == "" or lastname_cont == "":
+        cont_nocreate = Label(edit_frame, text="Заполнены не все поля", bg="white", font=30)
+        cont_nocreate.pack()
+        cont_nocreate.after(2500, cont_nocreate.destroy)
+        return
+    else:
+        cont_nofind = Label(delete_frame, text="Контакт не найден", bg="white", font=30)
+        cont_nofind.pack()
+        cont_nofind.after(2500, cont_nofind.destroy)
+
+def edit_selected_number():
+    name_cont = edit_name.get()
+    lastname_cont = edit_lastname.get()
+    number_cont=edit_phone_number_list.get(ACTIVE)
+    edit_numb=ed_numb.get()
+    a=""
+    if len(edit_numb)==12:
+        for i in range (11):
+            a+=edit_numb[i+1]
+        if a.isdigit():
+            with open("phone_book.txt", "r") as file:
+                lines = file.readlines()
+            with open("phone_book.txt", "w") as file:
+                for line in lines:
+                    if line.strip("\n") != f"{name_cont} {lastname_cont} {number_cont}":
+                        file.write(line)
+                    else:
+                        word = line.split()
+                        file.write(word[0] + " " + word[1] + " " + edit_numb+"\n")
+            text = Label(edit_frame2, text="Контакт успешно отредактирован", bg="white", font=30)
+            text.pack()
+            text.after(1000, text.destroy)
+        else:
+            text = Label(edit_frame2, text="Неверный номер телефона", bg="white", font=30)
+            text.pack()
+            text.after(1000, text.destroy)
+            return
+    else:
+        text=Label(edit_frame2,text="Неверный номер телефона",bg="white",font=30)
+        text.pack()
+        text.after(1000, text.destroy)
+        return
 
 def menu_page():
-    frame.pack(fill=BOTH, expand=1)
+    frame.pack(fill="both", expand=True)
     add_frame.pack_forget()
     find_frame.pack_forget()
     delete_frame.pack_forget()
+    delete_frame2.pack_forget()
+    edit_frame.pack_forget()
+    edit_frame2.pack_forget()
+
 root=Tk()
 root.title("Телефонный справочник")
 root.geometry("500x300")
 root.resizable(width=False,height=False)
 canvas=Canvas(root,height=500,width=300)
+
 #Фреймы
 frame = Frame(root, bg="white")
 add_frame=Frame(root,bg="white")
 delete_frame=Frame(root,bg="white")
+delete_frame2=Frame(root,bg="white")
 find_frame=Frame(root,bg="white")
+edit_frame = Frame(root, bg="white")
+edit_frame2 = Frame(root, bg="white")
+
 #Создание стартовой страницы
 menu_title = Label(frame, text="Меню", bg="white", font=40)
-menu_title.pack()
+menu_title.pack(ipady=10)
 menu_btn_add = Button(frame, text="Добавить контакт", bg="yellow", command=add_contact_page)
-menu_btn_add.pack()
+menu_btn_add.pack(pady=10)
 menu_btn_find=Button(frame, text="Поиск контакта",bg="yellow",command=find_contact_page)
-menu_btn_find.pack()
-menu_btn_delete=Button(frame, text="Удалить контакт",bg="white",command=delete_contact_page)
-menu_btn_delete.pack()
+menu_btn_find.pack(pady=10)
+menu_btn_edit=Button(frame, text="Редактировать контакт",bg="yellow",command=edit_contact_page)
+menu_btn_edit.pack(pady=10)
+menu_btn_delete=Button(frame, text="Удалить контакт",bg="yellow",command=delete_contact_page)
+menu_btn_delete.pack(pady=10)
+
 #Создание страницы создания контакта
 add_title=Label(add_frame,text="Создание контакта",bg="white",font=30)
 add_title.pack()
@@ -157,40 +286,175 @@ phone_number=Label(add_frame,text="Введите номер телефона", 
 phone_number.pack()
 add_phone_number=Entry(add_frame,bg="white",font=30)
 add_phone_number.pack()
-add_phone_number.insert(0,"+7")
-btn_create=Button(add_frame,text="Создать контакт",bg="white",command=add_contact)
-btn_create.pack()
-btn_menu=Button(add_frame,text="Меню",bg="white",command=menu_page)
-btn_menu.pack()
+btn_create=Button(add_frame,text="Создать контакт",bg="yellow",command=add_contact)
+btn_create.pack(pady=5)
+btn_menu=Button(add_frame,text="Меню",bg="yellow",command=menu_page)
+btn_menu.pack(pady=5)
+
 #Создание страницы поиска контакта
 find_title=Label(find_frame,text="Поиск контакта",bg="white",font=30)
-find_title.pack()
+find_title.pack(pady=5)
 name=Label(find_frame,text="Введите имя",bg="white",font=30)
-name.pack()
+name.pack(pady=5)
 find_name=Entry(find_frame,bg="white",font=30)
-find_name.pack()
+find_name.pack(pady=5)
 lastname=Label(find_frame,text="Введите фамилию",bg="white",font=30)
-lastname.pack()
+lastname.pack(pady=5)
 find_lastname=Entry(find_frame,bg="white",font=30)
-find_lastname.pack()
-find_btn=Button(find_frame,text="Поиск",bg="white",command=find_contact)
-find_btn.pack()
-find_btn_menu=Button(find_frame,text="Меню",bg="white",command=menu_page,font=30)
-find_btn_menu.pack()
-#Создание страницы удаления контакта
-delete_title=Label(delete_frame,text="Удаление контака",bg="white",font=30)
-delete_title.pack()
-name=Label(delete_frame,text="Введите имя",bg="white",font=30)
-name.pack()
-delete_name=Entry(delete_frame,bg="white",font=30)
-delete_name.pack()
-lastname=Label(delete_frame,text="Введите фамилию",bg="white",font=30)
-lastname.pack()
-delete_lastname=Entry(delete_frame,bg="white",font=30)
-delete_lastname.pack()
-delete_btn=Button(delete_frame,text="Удалить",bg="white",font=30,command=delete_contact)
-delete_btn.pack()
-delete_btn_menu=Button(delete_frame,text="Меню",bg="white",font=30,command=menu_page)
-delete_btn_menu.pack()
+find_lastname.pack(pady=5)
+find_btn=Button(find_frame,text="Поиск",bg="yellow",command=find_contact)
+find_btn.pack(pady=5)
+find_btn_menu=Button(find_frame,text="Меню",bg="yellow",command=menu_page,font=30)
+find_btn_menu.pack(pady=5)
+
+# Создание страницы удаления контакта
+delete_title = Label(delete_frame, text="Удаление контакта", bg="white", font=30)
+delete_title.pack(pady=5)
+name = Label(delete_frame, text="Введите имя", bg="white", font=30)
+name.pack(pady=5)
+delete_name = Entry(delete_frame, bg="white", font=30)
+delete_name.pack(pady=5)
+lastname = Label(delete_frame, text="Введите фамилию", bg="white", font=30)
+lastname.pack(pady=5)
+delete_lastname = Entry(delete_frame, bg="white", font=30)
+delete_lastname.pack(pady=5)
+delete_btn = Button(delete_frame, text="Удалить", bg="yellow", font=30, command=delete_contact)
+delete_btn.pack(pady=5)
+delete_btn_menu = Button(delete_frame, text="Меню", bg="yellow", font=30, command=menu_page)
+delete_btn_menu.pack(pady=5)
+
+# Создание страницы удаления контакта с несколькими номерами
+text = Label(delete_frame2, text="Выберите номер телефона, который хотите удалить", bg="white", font=30)
+text.pack(pady=5)
+delete_phone_number = StringVar()
+delete_phone_number_list = Listbox(delete_frame2, listvariable=delete_phone_number, bg="white", font=30, height=7)
+delete_phone_number_list.pack(pady=5)
+delete_number_btn = Button(delete_frame2, text="Удалить выбранный номер", bg="yellow", font=30, command=delete_selected_number)
+delete_number_btn.pack(pady=5)
+delete_btn_menu2 = Button(delete_frame2, text="Меню", bg="yellow", font=30, command=menu_page)
+delete_btn_menu2.pack(pady=5)
+
+#Создание страницы редактирования контакта
+edit_title = Label(edit_frame, text="Редактирование контакта", bg="white", font=30)
+edit_title.pack(pady=5)
+name = Label(edit_frame, text="Введите имя", bg="white", font=30)
+name.pack(pady=5)
+edit_name = Entry(edit_frame, bg="white", font=30)
+edit_name.pack(pady=5)
+lastname = Label(edit_frame, text="Введите фамилию", bg="white", font=30)
+lastname.pack(pady=5)
+edit_lastname = Entry(edit_frame, bg="white", font=30)
+edit_lastname.pack(pady=5)
+btn_edit = Button(edit_frame, text="Редактировать контакт", bg="yellow", command=edit_contact)
+btn_edit.pack(pady=5)
+btn_menu = Button(edit_frame, text="Меню", bg="yellow", command=menu_page)
+btn_menu.pack(pady=5)
+
+#Создание страницы редактирования контакта2
+edit_title = Label(edit_frame2, text="Выберите номер телефона для редактирования", bg="white", font=30)
+edit_title.pack(pady=5)
+edit_phone_number=StringVar()
+edit_phone_number_list=Listbox(edit_frame2,listvariable=edit_phone_number, bg="white", font=30,height=7)
+edit_phone_number_list.pack()
+edit_title2 = Label(edit_frame2, text="Введите новый номер телефона", bg="white", font=30)
+edit_title2.pack(pady=5)
+ed_numb=Entry(edit_frame2,bg="white",font=30)
+ed_numb.pack(pady=5)
+edit_btn=Button(edit_frame2,text="Выбрать",bg="yellow",font=30,command=edit_selected_number)
+edit_btn.pack(pady=5)
+
+#Стартовая страница
 menu_page()
 root.mainloop()
+
+#Тесты
+
+def add_contact_page():
+    # Имитация действий пользователя
+    add_name.delete(0, "end")
+    add_lastname.delete(0, "end")
+    add_phone_number.delete(0, "end")
+    add_phone_number.insert(0, "+7")
+class AddContactPageTest(unittest.TestCase):
+
+    def setUp(self):
+        self.root = Tk()
+
+    def test_add_contact_page(self):
+        global add_name, add_lastname, add_phone_number
+        add_name = Entry(self.root)
+        add_lastname = Entry(self.root)
+        add_phone_number = Entry(self.root)
+
+        # Предварительное заполнение полей
+        add_name.insert(0, "John")
+        add_lastname.insert(0, "Doe")
+
+        add_contact_page()
+
+        # Проверка, что поля были очищены и добавлен префикс "+7"
+        self.assertEqual(add_name.get(), "")
+        self.assertEqual(add_lastname.get(), "")
+        self.assertEqual(add_phone_number.get(), "+7")
+
+    def tearDown(self):
+        self.root.destroy()
+
+
+
+def find_contact_page():
+    # Имитация действий пользователя
+    find_name.delete(0, "end")
+    find_lastname.delete(0, "end")
+
+class FindContactPageTest(unittest.TestCase):
+
+    def setUp(self):
+        self.root = Tk()
+
+    def tearDown(self):
+        self.root.destroy()
+
+    def test_find_contact_page(self):
+        global find_name, find_lastname
+        find_name = Entry(self.root)
+        find_lastname = Entry(self.root)
+
+        # Предварительное заполнение полей
+        find_name.insert(0, "John")
+        find_lastname.insert(0, "Doe")
+
+        find_contact_page()
+
+        # Проверка, что поля были очищены
+        self.assertEqual(find_name.get(), "")
+        self.assertEqual(find_lastname.get(), "")
+def delete_contact_page():
+    # Имитация действий пользователя
+    delete_name.delete(0, "end")
+    delete_lastname.delete(0, "end")
+
+class DeleteContactPageTest(unittest.TestCase):
+
+    def setUp(self):
+        self.root = Tk()
+
+    def test_delete_contact_page(self):
+        global delete_name, delete_lastname
+        delete_name = Entry(self.root)
+        delete_lastname = Entry(self.root)
+
+        # Предварительное заполнение полей
+        delete_name.insert(0, "John")
+        delete_lastname.insert(0, "Doe")
+
+        delete_contact_page()
+
+        # Проверка, что поля были очищены
+        self.assertEqual(delete_name.get(), "")
+        self.assertEqual(delete_lastname.get(), "")
+
+    def tearDown(self):
+        self.root.destroy()
+if __name__ == '__main__':
+    unittest.main()
