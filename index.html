@@ -1,15 +1,22 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Phonebook</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-    <h>Hello world!</h>
-    <h>2line</h>
-    <script>
-        require('./render.js');
-    </script>
+    <h1>My Phonebook</h1>
+    <form id="contact-form">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="text" id="surname" placeholder="Surname" required>
+        <input type="text" id="phone" placeholder="Phone" required>
+        <button type="submit">Add Contact</button>
+    </form>
+
+    <div id="contacts"></div>
+
+    <script src="script.js"></script>
 </body>
 </html>
