@@ -3,20 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phonebook</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="static/styles.css">
+    <title>Контактный менеджер</title>
 </head>
 <body>
-    <h1>My Phonebook</h1>
-    <form id="contact-form">
-        <input type="text" id="name" placeholder="Name" required>
-        <input type="text" id="surname" placeholder="Surname" required>
-        <input type="text" id="phone" placeholder="Phone" required>
-        <button type="submit">Add Contact</button>
-    </form>
+    <h1>Контактный менеджер</h1>
+    <button onclick="showAddContactForm()">Добавить контакт</button>
+    <div id="contactList"></div>
 
-    <div id="contacts"></div>
+    <div id="addContactForm" style="display:none;">
+        <h2>Добавить контакт</h2>
+        <form onsubmit="addContact(event)">
+            <input type="text" id="name" placeholder="Имя" required>
+            <input type="text" id="surname" placeholder="Фамилия" required>
+            <input type="email" id="email" placeholder="Почта" required>
+            <input type="tel" id="home_phone" placeholder="Телефон" required>
+            <input type="text" id="address" placeholder="Адрес" required>
+            <input type="date" id="birthdate" required>
+            <button type="submit">Сохранить</button>
+            <button type="button" onclick="hideForms()">Отмена</button>
+        </form>
+    </div>
 
-    <script src="script.js"></script>
+    <script src="/static/script.js"></script>
 </body>
 </html>
