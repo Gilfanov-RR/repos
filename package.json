@@ -1,14 +1,15 @@
 {
-  "name": "app",
+  "name": "my-electron-app",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dev": "flask run"
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "electron": "^33.0.2"
+    "electron": "latest"
+  },
+  "devDependencies": {
+    "electron-builder": "^25.1.8"
   }
 }
