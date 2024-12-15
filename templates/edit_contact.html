@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles.css">
+    <title>Редактировать контакт</title>
+</head>
+<body>
+    <h1>Редактировать контакт</h1>
+    <form id="editContactForm" onsubmit="updateContact(event, {{ contact.id }})">
+        <input type="text" name="name" placeholder="Имя" value="{{ contact.name }}" required>
+        <input type="text" name="surname" placeholder="Фамилия" value="{{ contact.surname }}" required>
+        <input type="email" name="email" placeholder="Почта" value="{{ contact.email }}" required>
+        <input type="tel" name="home_phone" placeholder="Телефон" value="{{ contact.home_phone }}" required>
+        <input type="text" name="address" placeholder="Адрес" value="{{ contact.address }}" required>
+        <input type="date" name="birthdate" value="{{ contact.birthdate }}" required>
+        <input type="file" name="profile_image" accept="image/*">
+        <button type="submit">Сохранить изменения</button>
+        <button type="button" onclick="window.location.href='/'">Отмена</button>
+    </form>
+
+    <script src="/static/script.js"></script> <!-- Подключение скрипта -->
+</body>
+</html>
