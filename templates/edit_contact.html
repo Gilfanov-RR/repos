@@ -7,7 +7,7 @@
     <title>Редактировать контакт</title>
 </head>
 <body>
-    <h1>Редактировать контакт</h1>
+    <h1 style="text-align: center;">Редактировать контакт</h1>
     <form id="editContactForm" onsubmit="updateContact(event, {{ contact.id }})">
         <input type="text" name="name" placeholder="Имя" value="{{ contact.name }}" required>
         <input type="text" name="surname" placeholder="Фамилия" value="{{ contact.surname }}" required>
@@ -20,6 +20,6 @@
         <button type="button" onclick="window.location.href='/'">Отмена</button>
     </form>
 
-    <script src="/static/script.js"></script> <!-- Подключение скрипта -->
+    <script src="/static/script.js"></script>
 </body>
 </html>
