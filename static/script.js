@@ -18,11 +18,20 @@ function displayContacts(contactsToDisplay) {
 
     contactsToDisplay.forEach(contact => {
         const listItem = document.createElement('div');
+        listItem.className = 'contact-item'; // Добавляем класс для стилизации
         listItem.innerHTML = `
-            <strong>${contact.name} ${contact.surname}</strong>
-            <img src="${contact.profile_image}" alt="${contact.name}" style="width: 50px; height: 50px;">
-            <button onclick="showEditContactForm(${contact.id})">Редактировать</button>
-            <button onclick="deleteContact(${contact.id})">Удалить</button>
+            <img src="${contact.profile_image}" alt="${contact.name}" style="width: 75px; height: 75px;">
+            <div class="contact-info">
+                <strong>${contact.name} ${contact.surname}</strong>
+                <span>Email: ${contact.email}</span>
+                <span>Телефон: ${contact.home_phone}</span>
+                <span>Адрес: ${contact.address}</span>
+                <span>Дата рождения: ${contact.birthdate}</span>
+            </div>
+            <div class="contact-buttons">
+                <button onclick="showEditContactForm(${contact.id})">Редактировать</button>
+                <button onclick="deleteContact(${contact.id})">Удалить</button>
+            </div>
         `;
         contactList.appendChild(listItem);
     });
