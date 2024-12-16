@@ -1,170 +1,141 @@
-/* Общие стили для всей страницы */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Общие стили */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+    font-family: Arial, sans-serif; /* Устанавливаем шрифт приложения */
+    line-height: 1.6; /* Высота строки для улучшей читабельности */
+    margin: 0; /* Убираем отступы по умолчанию */
+    padding: 0; /* Убираем внутренние отступы */
+    background-color: #fff0f0; /* Цвет фона приложения */
+}
+
+
+
+.header-controls {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: 20px;
+    margin-top: 10px;
 }
 
-h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #343a40;
-    text-align: center;
+.header-controls button {
+    margin-right: 10px; /* Отступ справа от кнопки */
 }
 
-/* Стили для навигации */
-nav {
-    text-align: center;
-    margin-bottom: 20px;
+.header-controls input[type="text"] {
+    padding: 10px;
+    width: 200px; /* Ширина поля поиска */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/* Оформление основного контейнера для списка контактов */
+#contactList {
+    display: flex;
+    flex-direction: column; /* Вертикально располагает элементы списка */
+    margin: 20px; /* Отступы вокруг списка */
+    padding: 0; /* Убираем отступы внутри */
+    list-style-type: none; /* Убираем маркеры списка */
 }
 
-/* Стили для кнопок */
+/* Оформление каждого элемента списка контактов */
+.contact-item {
+    display: flex; /* Включаем Flexbox для горизонтального расположения элементов */
+    align-items: center; /* Центрируем элементы вертикально */
+    border: 1px solid #ddd; /* Границы для каждого элемента */
+    padding: 10px; /* Внутренние отступы */
+    margin-bottom: 10px; /* Отступы между элементами списка */
+    border-radius: 5px; /* Закругление углов */
+    background-color: #ededed; /* Цвет фона элемента */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.contact-item:hover {
+    background-color: #f1f1f1; /* Цвет фона при наведении */
+}
+
+/* Оформление фотографии контакта */
+.contact-item img {
+    border-radius: 50%; /* Закругленные края для фотографий */
+    margin-right: 20px; /* Отступ между изображением и текстом */
+}
+
+/* Оформление блока с информацией о контакте */
+.contact-info {
+    flex: 1; /* Занимает оставшееся пространство */
+}
+
+/* Оформление кнопок редактирования и удаления */
+.contact-buttons {
+    display: flex; /* Создаем горизонтальный контейнер для кнопок */
+    gap: 10px; /* Расстояние между кнопками */
+}
+
+/* Оформление кнопок */
 button {
-    padding: 10px 15px;
-    margin: 5px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+    background-color: #4CAF50; /* Цвет фона кнопок */
+    border: none; /* Убираем границы кнопок */
+    color: white; /* Цвет текста */
+    padding: 8px 12px; /* Внутренние отступы */
+    text-align: center; /* Выравнивание текста по центру */
+    text-decoration: none; /* Убираем подчеркивание текста */
+    border-radius: 5px; /* Закругление углов кнопок */
+    cursor: pointer; /* Изменение курсора при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета кнопки */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #45a049; /* Цвет кнопок при наведении */
 }
 
-/* Стили для форм */
+/* Стили для заголовков в карточках контактов */
+.contact-info strong {
+    display: block; /* Разделяем элемент на блок для лучшего выравнивания */
+    font-size: 18px; /* Размер шрифта имени */
+    margin-bottom: 5px; /* Отступ между именем и остальной информацией */
+}
+
+/* Стили для дополнительных данных контактов */
+.contact-info span {
+    display: block; /* Разделяем элемент на блок для лучшего выравнивания */
+    color: #555; /* Серый цвет для меньшей важности */
+}
+
+/* Стили для формы добавления/редактирования контакта */
 form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 450px;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: #ededed; /* Цвет фона формы */
+    padding: 20px; /* Внутренние отступы в форме */
+    margin: 20px; /* Отступы вокруг формы */
+    border-radius: 5px; /* Закругление углов формы */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для улучшения восприятия */
 }
 
-form input, form button {
-    width: 100%;
-    margin-bottom: 15px;
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="date"],
+form input[type="file"] {
+    width: calc(100% - 20px); /* Ширина инпутов с учетом отступов */
+    padding: 10px; /* Внутренние отступы в инпутах */
+    margin-bottom: 10px; /* Отступы между инпутами */
+    border: 1px solid #ccc; /* Границы для инпутов */
+    border-radius: 4px; /* Закругленные углы инпутов */
+    box-sizing: border-box; /* Учитываем отступы и границы в расчете ширины */
 }
 
+/* Стили для кнопки отправки формы */
 form button[type="submit"] {
-    background-color: #4caf50;
+    background-color: #4CAF50; /* Цвет фона кнопки */
+    color: white; /* Цвет текста */
+    border: none; /* Убираем границы кнопки */
+    padding: 10px 15px; /* Внутренние отступы */
+    cursor: pointer; /* Изменение курсора при наведении */
 }
 
+/* Эффект наведения для кнопки отправки формы */
 form button[type="submit"]:hover {
-    background-color: #388e3c;
+    background-color: #45a049; /* Цвет кнопки при наведении */
 }
 
-/* Стили для полей ввода */
-input, textarea {
-    padding: 10px;
-    font-size: 1rem;
-    margin: 10px 0;
-    width: 600px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    background-color: white;
-}
-
-input[type="file"] {
-    padding: 5px 0;
-}
-
-/* Стили для разделителей */
-hr {
-    margin: 10px 0;
-    border: 0;
-    border-top: 1px solid #ddd;
-}
-
-/* Стили для списка контактов */
-#contactList {
-    width: 100%;
-    max-width: 600px;
-    margin-top: 20px;
-}
-
-#contactList div {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: box-shadow 0.3s ease;
-}
-
-#contactList div:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-#contactList div img {
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
-}
-
-#contactList div strong {
-    font-size: 1.2rem;
-    color: #333;
-}
-
-#contactList div button {
-    padding: 5px 10px;
-    font-size: 0.9rem;
-}
-
-#contactList div button:first-child {
-    background-color: #ff9800;
-}
-
-#contactList div button:first-child:hover {
-    background-color: #fb8c00;
-}
-
-#contactList div button:last-child {
-    background-color: #f44336;
-}
-
-#contactList div button:last-child:hover {
-    background-color: #e53935;
-}
-
-/* Стиль для поля поиска */
-#searchInput {
-    width: 100%;
-    max-width: 500px;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    background-color: white;
-}
-
-/* Стиль для сообщений об ошибках */
+/* Оформление сообщений об ошибках */
 .error-message {
-    color: red;
-    font-size: 1rem;
-    margin-top: 10px;
-    font-weight: bold;
+    color: red; /* Цвет текста ошибок */
+    margin-top: 10px; /* Отступ сверху */
 }
